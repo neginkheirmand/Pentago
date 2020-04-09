@@ -14,6 +14,7 @@ public class Pentago
      */
     public Pentago(){
         boardColor=chooseBoardColor();
+        blocks= new Block[4];
         for(int i=0; i<4; i++){
             blocks[i]=new Block();
         }
@@ -37,11 +38,15 @@ public class Pentago
                 //because the color of the intellij interferes with the white color
         };
         for(int i=0; i<colors.length; i++){
-            System.out.println(colors[i][0]+colors[i][1]);
+            System.out.println("\033[1;91m"+(i+1)+colors[i][0]+colors[i][1]);
         }
         Scanner scan=new Scanner(System.in);
         int choosenColor= scan.nextInt();
-        return colors[choosenColor][0];
+        while(choosenColor<=0||choosenColor>colors.length){
+            System.out.println("Please enter a valid number:");
+            choosenColor= scan.nextInt();
+        }
+        return colors[choosenColor-1][0];
     }
 
     /**
@@ -64,9 +69,6 @@ public class Pentago
             return;
         }
 
-
-
-
         System.out.printf("\033[1;94m"+"    ");
 
         for(int i=1; i<7; i++){
@@ -76,7 +78,9 @@ public class Pentago
             }
         }
 
-        System.out.printf("\033[1;96m"+"\n    ");
+
+
+        System.out.printf(boardColor+"\n    ");
         for(int i=0; i<6; i++){
             System.out.printf("+-----");
             if(i==2){
@@ -86,9 +90,15 @@ public class Pentago
         System.out.println("+");
 
         for(int i=0; i<6; i++){
-            System.out.printf(" "+(i+1)+"  ");
+            System.out.printf("\033[1;94m"+" "+(i+1)+"  "+boardColor);
             for(int j=0; j<6; j++){
-                System.out.printf("|  O  ");
+                System.out.printf("|  ");
+                if(getMarbleHouse(i, j).isFull()){
+                    System.out.printf(getMarbleHouse(i, j).getMarble().getColorOfPlayer());
+                    System.out.printf("O  "+boardColor);
+                }else{
+                    System.out.printf("   ");
+                }
                 if(j==2){
                     System.out.printf("|   ");
                 }
@@ -106,7 +116,8 @@ public class Pentago
 
 
             if(i==2){
-                System.out.println();
+            System.out.println();
+        /*
                 System.out.printf("    ");
                 for(int k=0; k<6; k++){
                     System.out.printf("+-----");
@@ -115,6 +126,10 @@ public class Pentago
                     }
                 }
                 System.out.println("+");
+        */
+        //a abreviation of the code above is:
+            System.out.println("    +-----+-----+-----+   +-----+-----+-----+");
+
             }
         }
 
@@ -126,10 +141,21 @@ public class Pentago
 
     }
 
-
     private  MarbleHouse getMarbleHouse(int row, int column){
         //the rows and columns are counted from 0 to 5
-        Block specifiedBlock;
-        if(row<3)
+        if(row<3&&column<3){
+            return  blocks[0].getMarbleHouse(row, column);
+
+        }
+        else if(row<3&&column>2){
+            return  blocks[1].getMarbleHouse(row, (column%3));
+        }
+        else if(row>2&&column<3){
+            return  blocks[2].getMarbleHouse((row%3), column);
+        }
+        else{
+            return  blocks[3].getMarbleHouse((row%3), (column%3));
+        }
     }
+
 }

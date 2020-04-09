@@ -49,4 +49,8 @@ public class Block {
 
     }
 
+    public MarbleHouse getMarbleHouse(int i, int j){
+        return blockHouses[i][j];
+    }
+
 }
