@@ -1,6 +1,5 @@
 package ir.ac.aut;
 
-
 public class MarbleHouse {
     private final int xOfHouse;
     private final int yOfHouse;
@@ -12,15 +11,6 @@ public class MarbleHouse {
         this.yOfHouse=y;
         this.isFull=false;
         marble=null;
-        //to make sure we wont use it (cause there is still no marble in this house of the board)
-    }
-
-    public MarbleHouse(int x, int y, TYPE type){
-        this.xOfHouse=x;
-        this.yOfHouse=y;
-        this.isFull=true;
-//        marble=null;
-        marble= new Marble(type);
         //to make sure we wont use it (cause there is still no marble in this house of the board)
     }
 
