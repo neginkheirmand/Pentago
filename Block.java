@@ -53,4 +53,8 @@ public class Block {
         return blockHouses[i][j];
     }
 
+    public TYPE getTypeOfMarble(int i, int j){
+        return blockHouses[i][j].getType();
+    }
+
 }

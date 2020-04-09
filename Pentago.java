@@ -89,8 +89,8 @@ public class Pentago
             System.out.printf("\033[1;94m"+" "+(i+1)+"  "+boardColor);
             for(int j=0; j<6; j++){
                 System.out.printf("|  ");
-                if(getMarbleHouse(i, j).isFull()){
-                    System.out.printf(getMarbleHouse(i, j).getMarble().getColorOfPlayer());
+                if(getMarbleHouseInBoard(i, j).isFull()){
+                    System.out.printf(getMarbleHouseInBoard(i, j).getMarble().getColorOfPlayer());
                     System.out.printf("O  "+boardColor);
                 }else{
                     System.out.printf("   ");
@@ -133,7 +133,13 @@ public class Pentago
 
     }
 
-    private  MarbleHouse getMarbleHouse(int row, int column){
+    /**
+     * method to find
+     * @param row
+     * @param column
+     * @return
+     */
+    private  MarbleHouse getMarbleHouseInBoard(int row, int column){
         //the rows and columns are counted from 0 to 5
         if(row<3&&column<3){
             return  blocks[0].getMarbleHouse(row, column);
@@ -150,15 +156,44 @@ public class Pentago
         }
     }
 
+    public boolean addMarbleToBoard(TYPE playerType, int row, int column){
+        if(getMarbleHouseInBoard(row, column).isFull()){
+            return false;
+        }else{
+           getMarbleHouseInBoard(row,column).putMarble(playerType);
+            return true;
+        }
+    }
 
-    public boolean gameOver(){
+    public void twistBlock(int blockNum, boolean isClockwise) {
+        //the block num varies from 0 to 3
+        blocks[blockNum].notch(isClockwise);
+        return;
+    }
+
+    private void printWinner(TYPE typeOfPlayer){            //IN GHAZIE RO BADN CHECK KON (IF AVAL)
+        if(typeOfPlayer ==null){
+            System.out.printf(" game ended with no winner ");
+        }
+        System.out.println("\033[1;32m" + "WINNER IS :");
+        if(typeOfPlayer.equals(TYPE.RED)){
+            System.out.printf("\033[1;31m"+"Red Player");
+        }else{
+            System.out.printf("\033[1;30m" + "Black Player");
+        }
+        return;
+    }
+
+    public boolean gameOver(){           //CHECK IT ONE LAST TIME
+        boolean redWin=false;
+        boolean blackWin=false;
         //horizontally
         int numContinousBlack=0;
         int numContinousRed=0;
         for(int i=0; i<6; i++){
             for(int j=1; j<5; j++){
-                if(getMarbleHouse(i, j).isFull()){
-                    if(getMarbleHouse(i, j).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
+                if(getMarbleHouseInBoard(i, j).isFull()){
+                    if(getMarbleHouseInBoard(i, j).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
                         numContinousBlack++;
                     }else{
                         numContinousRed++;
@@ -169,16 +204,16 @@ public class Pentago
                 }
             }
             if(numContinousBlack==4){
-                    if(getMarbleHouse(i, 0).isFull() && getMarbleHouse(i, 0).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
-                        return true;
-                    }else if(getMarbleHouse(i, 5).isFull() && getMarbleHouse(i, 5).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
-                        return true;
+                    if(getMarbleHouseInBoard(i, 0).isFull() && getMarbleHouseInBoard(i, 0).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
+                        blackWin = true;
+                    }else if(getMarbleHouseInBoard(i, 5).isFull() && getMarbleHouseInBoard(i, 5).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
+                        blackWin = true;
                     }
             } else if(numContinousRed==4){
-                if(getMarbleHouse(i, 0).isFull() && getMarbleHouse(i, 0).getMarble().getTypeOfMarble().equals(TYPE.RED)){
-                    return true;
-                }else if(getMarbleHouse(i, 5).isFull() && getMarbleHouse(i, 5).getMarble().getTypeOfMarble().equals(TYPE.RED)){
-                    return true;
+                if(getMarbleHouseInBoard(i, 0).isFull() && getMarbleHouseInBoard(i, 0).getMarble().getTypeOfMarble().equals(TYPE.RED)){
+                    redWin = true;
+                }else if(getMarbleHouseInBoard(i, 5).isFull() && getMarbleHouseInBoard(i, 5).getMarble().getTypeOfMarble().equals(TYPE.RED)){
+                    redWin = true;
                 }
             }
             numContinousBlack=0;
@@ -189,8 +224,8 @@ public class Pentago
         //vertically
         for(int j=0; j<6; j++){
             for(int i=1; i<5; i++){
-                if(getMarbleHouse(i, j).isFull()){
-                    if(getMarbleHouse(i, j).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
+                if(getMarbleHouseInBoard(i, j).isFull()){
+                    if(getMarbleHouseInBoard(i, j).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
                         numContinousBlack++;
                     }else{
                         numContinousRed++;
@@ -201,15 +236,15 @@ public class Pentago
                 }
             }
             if(numContinousBlack==4){
-                if(getMarbleHouse(0,j).isFull() && getMarbleHouse(0, j).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
-                    return true;
-                }else if(getMarbleHouse(0, j).isFull() && getMarbleHouse(5, j).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
-                    return true;
+                if(getMarbleHouseInBoard(0,j).isFull() && getMarbleHouseInBoard(0, j).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
+                    blackWin = true;
+                }else if(getMarbleHouseInBoard(0, j).isFull() && getMarbleHouseInBoard(5, j).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
+                    blackWin = true;
                 }
             } else if(numContinousRed==4){
-                if(getMarbleHouse(0, j).isFull() && getMarbleHouse(0, j).getMarble().getTypeOfMarble().equals(TYPE.RED)){
-                    return true;
-                }else if(getMarbleHouse(5, j).isFull() && getMarbleHouse(5, j).getMarble().getTypeOfMarble().equals(TYPE.RED)){
+                if(getMarbleHouseInBoard(0, j).isFull() && getMarbleHouseInBoard(0, j).getMarble().getTypeOfMarble().equals(TYPE.RED)){
+                    redWin = true;
+                }else if(getMarbleHouseInBoard(5, j).isFull() && getMarbleHouseInBoard(5, j).getMarble().getTypeOfMarble().equals(TYPE.RED)){
                     return true;
                 }
             }
@@ -220,8 +255,8 @@ public class Pentago
 
         //diagonal(/)
         for(int i=5, j=0; j<6 && i>=0; i--, j++){
-            if(getMarbleHouse(i, j).isFull()){
-                if(getMarbleHouse(i, j).getMarble().getTypeOfMarble().equals(TYPE.RED)){
+            if(getMarbleHouseInBoard(i, j).isFull()){
+                if(getMarbleHouseInBoard(i, j).getMarble().getTypeOfMarble().equals(TYPE.RED)){
                     numContinousRed++;
                 }else{
                     numContinousBlack++;
@@ -233,16 +268,16 @@ public class Pentago
             }
         }
         if(numContinousBlack==5){
-            return true;
+            blackWin = true;
         }else if(numContinousRed==5){
-            return true;
+            redWin = true;
         }
         numContinousBlack=0;
         numContinousRed=0;
 
         for(int i=4, j=0; i>=0; i--, j++){
-            if(getMarbleHouse(i, j).isFull()){
-                if(getMarbleHouse(i, j).getMarble().getTypeOfMarble().equals(TYPE.RED)){
+            if(getMarbleHouseInBoard(i, j).isFull()){
+                if(getMarbleHouseInBoard(i, j).getMarble().getTypeOfMarble().equals(TYPE.RED)){
                     numContinousRed++;
                 }else if(numContinousRed==0){
                     numContinousBlack++;
@@ -254,16 +289,16 @@ public class Pentago
             }
         }
         if(numContinousBlack==5){
-            return true;
+            blackWin = true;
         }else if(numContinousRed==5){
-            return true;
+            redWin = true;
         }
         numContinousBlack=0;
         numContinousRed=0;
 
         for(int i=5, j=1; j<6; j++, i--){
-            if(getMarbleHouse(i, j).isFull()){
-                if(getMarbleHouse(i, j).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
+            if(getMarbleHouseInBoard(i, j).isFull()){
+                if(getMarbleHouseInBoard(i, j).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
                     numContinousBlack++;
                 }else if(numContinousBlack==0){
                     numContinousRed++;
@@ -275,9 +310,9 @@ public class Pentago
             }
         }
         if(numContinousBlack==5){
-            return true;
+            blackWin = true;
         }else if(numContinousRed==5){
-            return true;
+            redWin = true;
         }
         numContinousBlack=0;
         numContinousRed=0;
@@ -285,8 +320,8 @@ public class Pentago
 
         //diagona(\)
         for(int i=0,j=0; i<6; i++, j++){
-            if(getMarbleHouse(i, j).isFull()) {
-                if (getMarbleHouse(i, j).getMarble().getTypeOfMarble().equals(TYPE.BLACK)) {
+            if(getMarbleHouseInBoard(i, j).isFull()) {
+                if (getMarbleHouseInBoard(i, j).getMarble().getTypeOfMarble().equals(TYPE.BLACK)) {
                     numContinousBlack++;
                 }else {
                     numContinousRed++;
@@ -298,16 +333,16 @@ public class Pentago
             }
         }
         if(numContinousBlack==5){
-            return true;
+            blackWin = true;
         }else if(numContinousRed==5){
-            return true;
+            redWin = true;
         }
         numContinousBlack=0;
         numContinousRed=0;
 
         for(int i=0, j=1; j<6; j++, i++){
-            if(getMarbleHouse(i, j).isFull()){
-                if(getMarbleHouse(i,j).getMarble().getTypeOfMarble().equals(TYPE.BLACK) ){
+            if(getMarbleHouseInBoard(i, j).isFull()){
+                if(getMarbleHouseInBoard(i,j).getMarble().getTypeOfMarble().equals(TYPE.BLACK) ){
                     if(numContinousRed!=0){
                         break;
                     }else{
@@ -323,16 +358,16 @@ public class Pentago
             }
         }
         if(numContinousBlack==5){
-            return true;
+            blackWin = true;
         }else if(numContinousRed==5){
-            return true;
+            redWin = true;
         }
         numContinousBlack=0;
         numContinousRed=0;
 
         for(int i=1, j=0; i<6; i++, j++){
-            if(getMarbleHouse(i, j).isFull()) {
-                if (getMarbleHouse(i, j).getMarble().getTypeOfMarble().equals(TYPE.RED)) {
+            if(getMarbleHouseInBoard(i, j).isFull()) {
+                if (getMarbleHouseInBoard(i, j).getMarble().getTypeOfMarble().equals(TYPE.RED)) {
                     if (numContinousBlack == 0) {
                         numContinousRed++;
                     } else {
@@ -348,11 +383,22 @@ public class Pentago
             }
         }
         if(numContinousBlack==5){
-            return true;
+            blackWin = true;
         }else if(numContinousRed==5){
-            return true;
+            redWin = true;
         }
 
+        if(redWin && blackWin){
+            printWinner(null);
+            return true;
+        }
+        if(redWin){
+            printWinner(TYPE.RED);
+            return true;
+        }else if(blackWin){
+            printWinner(TYPE.BLACK);
+            return true;
+        }
 
         return false;
     }

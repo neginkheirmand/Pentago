@@ -27,7 +27,7 @@ public class Player {
         Scanner scan=new Scanner(System.in);
         int row, column;
         if(typePlayer.name().equals("BLACK")){
-            System.out.println("\033[1;30m");
+            System.out.println("\033[1;90m");
             //change the output color to black since the message is for the black player
         }
         else{
@@ -46,35 +46,48 @@ public class Player {
         while(column<0|| column>6){
             System.out.println("Please enter a valid number");
         }
-        //now we have to understand which block is the player refering to
-        /*
-         * Blocks enumerating:
-         *     __________________
-         *    |         |        |
-         *    |    1    |    2   |
-         *    | ________|________|
-         *    |         |        |
-         *    |    3    |    4   |
-         *    | ________|________|
-         */
 
-
-        int blockNumber;
-        if(row<4&&column<4){
-            blockNumber=1;
-        }
-        else if(row<4&&column>3){
-            blockNumber=2;
-        }
-        else if(row>3&&column<4){
-            blockNumber=3;
-        }
-        else{
-            blockNumber=4;
-        }
-        int answer[]={row-1, column-1, blockNumber-1};
+        int answer[]={row-1, column-1};
         return answer;
     }
 
+    public int getBlockNum(){
+        if(this.typePlayer.equals(TYPE.RED)){
+            System.out.printf("\033[1;31m");
+        }else{
+            System.out.printf("\033[1;90m");
+        }
+        Scanner scan=new Scanner(System.in);
+        System.out.println("Please enter the number of block you want to twist:");
+        System.out.println("     __________________");
+        System.out.println("    |         |        |");
+        System.out.println("    |    1    |    2   |");
+        System.out.println("    | ________|________|");
+        System.out.println("    |         |        |");
+        System.out.println("    |    3    |    4   |");
+        System.out.println("    | ________|________|");
+        int blockNum=scan.nextInt();
+        while(blockNum<1||blockNum>4){
+            System.out.printf("Please enter a valid number:");
+            blockNum=scan.nextInt();
+        }
+        return blockNum-1;
+    }
+
+    public boolean getTwistType(){
+        Scanner scan=new Scanner(System.in);
+        System.out.println("How do you want to twist the block?\n1) Clock-Wise\n2) Counter Clock-Wise");
+        int temp = scan.nextInt();
+        while(temp!=1&&temp!=2){
+            System.out.printf("Please enter a valid number:\n");
+            temp= scan.nextInt();
+        }
+
+        if(temp==1){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 }

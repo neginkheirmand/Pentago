@@ -18,6 +18,9 @@ public class MarbleHouse {
         return isFull;
     }
 
+    public TYPE getType(){
+        return marble.getTypeOfMarble();
+    }
     public void putMarble(TYPE typeOfPlayer){
         isFull=true;
         marble= new Marble(typeOfPlayer);
