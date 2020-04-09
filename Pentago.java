@@ -137,9 +137,77 @@ public class Pentago
 
     }
 
+
+
     public void print(){
+//
+//        System.out.printf("\033[0;37m"+"    ");
+//
+//        for(int i=0; i<6; i++){
+//            System.out.printf("   %d  ", i);
+//            if(i==2){
+//                System.out.printf("    ", i);
+//            }
+//        }
+//
+//
+//
+//        System.out.printf(boardColor+"\n    ");
+//        for(int i=0; i<6; i++){
+//            System.out.printf("+-----");
+//            if(i==2){
+//                System.out.printf("+   ");
+//            }
+//        }
+//        System.out.println("+");
+//
+//        for(int i=0; i<6; i++){
+//            System.out.printf("\033[0;37m"+" "+(i+1)+"  "+boardColor);
+//            for(int j=0; j<6; j++){
+//                System.out.printf("|  ");
+//                if(getMarbleHouse(i, j).isFull()){
+//                    System.out.printf(getMarbleHouse(i, j).getMarble().getColorOfPlayer());
+//                    System.out.printf("\u26AB"+"  "+boardColor);
+//                }else{
+//                    System.out.printf("   ");
+//                }
+//                if(j==2){
+//                    System.out.printf("|   ");
+//                }
+//            }
+//            System.out.println("|");
+//
+//            System.out.printf("    ");
+//            for(int k=0; k<6; k++){
+//                System.out.printf("+-----");
+//                if(k==2){
+//                    System.out.printf("+   ");
+//                }
+//            }
+//            System.out.println("+");
+//
+//
+//            if(i==2){
+//                System.out.println();
+//        /*
+//                System.out.printf("    ");
+//                for(int k=0; k<6; k++){
+//                    System.out.printf("+-----");
+//                    if(k==2){
+//                        System.out.printf("+   ");
+//                    }
+//                }
+//                System.out.println("+");
+//        */
+//                //a abreviation of the code above is:
+//                System.out.println("    +-----+-----+-----+   +-----+-----+-----+");
+//
+//            }
+//        }
+//
 
     }
+
 
     private  MarbleHouse getMarbleHouse(int row, int column){
         //the rows and columns are counted from 0 to 5
