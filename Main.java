@@ -18,7 +18,7 @@ public class Main {
         while(true){
             //turn of red/white player
             pentagoBoard.print();
-            if(pentagoBoard.gameOver()){
+            if(pentagoBoard.gameOver(true)){
                 break;
             }
             do {
@@ -31,7 +31,7 @@ public class Main {
                 repetition++;
             }while(!pentagoBoard.addMarbleToBoard(TYPE.RED, row, column));
             pentagoBoard.print();
-            if(pentagoBoard.gameOver()){
+            if(pentagoBoard.gameOver(true)){
                 break;
             }
             block = redPlayer.getBlockNum();
@@ -39,7 +39,7 @@ public class Main {
             pentagoBoard.twist(block, clockWise);
             //now turn of black player
             pentagoBoard.print();
-            if(pentagoBoard.gameOver()){
+            if(pentagoBoard.gameOver(true)){
                 break;
             }
             do {
@@ -48,7 +48,7 @@ public class Main {
                 column = cont[1];
             }while(!pentagoBoard.addMarbleToBoard(TYPE.BLACK, row, column));
             pentagoBoard.print();
-            if(pentagoBoard.gameOver()){
+            if(pentagoBoard.gameOver(true)){
                 break;
             }
             block = blackPlayer.getBlockNum();

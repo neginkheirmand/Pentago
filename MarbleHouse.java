@@ -30,11 +30,16 @@ public class MarbleHouse {
         marble= new Marble(typeOfPlayer);
     }
 
+    public void hollowHouse(){
+        isFull = false;
+        marble = null;
+    }
+
     public int getXOfHouse(){
         return xOfHouse;
     }
 
-    public int getyOfHouse(){
+    public int getYOfHouse(){
         return yOfHouse;
     }
 
@@ -64,4 +69,5 @@ public class MarbleHouse {
             return false;
         }
     }
+    //for only checking the type of marble
 }

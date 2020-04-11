@@ -2,6 +2,7 @@ package ir.ac.aut;
 
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Pentago
@@ -166,6 +167,42 @@ public class Pentago
         }
     }
 
+    public ArrayList<MarbleHouse> getEmptyHouses(TYPE typeOfAi){
+        ArrayList<MarbleHouse> emptyHouses = new ArrayList<MarbleHouse>();
+        int numberInBlock=0;
+        int [] pointEachBlock= new int[4];
+        for(int i=0; i<4; i++){
+            pointEachBlock[i]= blocks[i].marblesStrategy(typeOfAi);
+        }
+        for(int i=0; i<4; i++){
+            numberInBlock = 0;
+            //this first pair of loop for getting the number of full houses in every block
+            for (int x = 0; x < 3; x++) {
+                for (int y = 0; y < 3; y++) {
+                    if(!blocks[i].getMarbleHouse(y, x).isFull()) {
+                        numberInBlock++;
+                    }
+                }
+            }
+            for (int x = 0; x < 3; x++) {
+                for (int y = 0; y < 3; y++) {
+                    if (!blocks[i].getMarbleHouse(y, x).isFull()) {
+                        numberInBlock++;
+                        if(pointEachBlock[i]>5){
+                            emptyHouses.add(0, blocks[i].getMarbleHouse(y, x));
+                        }else if (numberInBlock>2) {
+                            emptyHouses.add(emptyHouses.size()/2, blocks[i].getMarbleHouse(y, x));
+                        }else{
+                            emptyHouses.add( blocks[i].getMarbleHouse(y, x));
+                        }
+                    }
+                }
+            }
+
+        }
+        return emptyHouses;
+    }
+
     public boolean addMarbleToBoard(TYPE playerType, int row, int column){
         if(getMarbleHouseInBoard(row, column).isFull()){
             return false;
@@ -175,22 +212,22 @@ public class Pentago
         }
     }
 
-    private void printWinner(TYPE typeOfPlayer){            //IN GHAZIE RO BADN CHECK KON (IF AVAL)
-        if(typeOfPlayer ==null){
-            System.out.printf(" game ended with no winner ");
-        }
-        System.out.println("\033[1;32m" + "WINNER IS :");
-        if(typeOfPlayer.equals(TYPE.RED)){
-            System.out.printf("\033[1;31m"+"Red Player");
-        }else{
-            System.out.printf("\033[1;30m" + "Black Player");
-        }
-        return;
-    }
+    public int winner(){
 
-    public boolean gameOver(){           //CHECK IT ONE LAST TIME
         boolean redWin=false;
         boolean blackWin=false;
+        boolean emptyHouse =false;
+
+
+        for(int i=0; i<6; i++){
+            for(int j=0; j<6; j++){
+                if(!getMarbleHouseInBoard(i, j).isFull()){
+                    emptyHouse=true;
+                }
+            }
+        }
+        //if empty house is false the game is over
+
         //horizontally
         int numContinousBlack=0;
         int numContinousRed=0;
@@ -208,11 +245,11 @@ public class Pentago
                 }
             }
             if(numContinousBlack==4){
-                    if(getMarbleHouseInBoard(i, 0).isFull() && getMarbleHouseInBoard(i, 0).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
-                        blackWin = true;
-                    }else if(getMarbleHouseInBoard(i, 5).isFull() && getMarbleHouseInBoard(i, 5).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
-                        blackWin = true;
-                    }
+                if(getMarbleHouseInBoard(i, 0).isFull() && getMarbleHouseInBoard(i, 0).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
+                    blackWin = true;
+                }else if(getMarbleHouseInBoard(i, 5).isFull() && getMarbleHouseInBoard(i, 5).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
+                    blackWin = true;
+                }
             } else if(numContinousRed==4){
                 if(getMarbleHouseInBoard(i, 0).isFull() && getMarbleHouseInBoard(i, 0).getMarble().getTypeOfMarble().equals(TYPE.RED)){
                     redWin = true;
@@ -249,7 +286,7 @@ public class Pentago
                 if(getMarbleHouseInBoard(0, j).isFull() && getMarbleHouseInBoard(0, j).getMarble().getTypeOfMarble().equals(TYPE.RED)){
                     redWin = true;
                 }else if(getMarbleHouseInBoard(5, j).isFull() && getMarbleHouseInBoard(5, j).getMarble().getTypeOfMarble().equals(TYPE.RED)){
-                    return true;
+                    redWin = true;
                 }
             }
             numContinousBlack=0;
@@ -332,7 +369,7 @@ public class Pentago
                 }
             } else{
                 if(i!=0&&i!=5){
-                      break;
+                    break;
                 }
             }
         }
@@ -392,19 +429,48 @@ public class Pentago
             redWin = true;
         }
 
-        if(redWin && blackWin){
-            printWinner(null);
-            return true;
-        }
-        if(redWin){
-            printWinner(TYPE.RED);
-            return true;
-        }else if(blackWin){
-            printWinner(TYPE.BLACK);
-            return true;
-        }
 
-        return false;
+        if(redWin && blackWin){
+            //draw
+            return 3;
+        }
+        else if(redWin){
+            //red wins
+            return 2;
+        }else if(blackWin){
+            //black wins
+            return 1;
+        }
+        else if(emptyHouse==false){
+            //no winner
+            return 0;
+        }
+        //the game is not over
+        return -1;
+    }
+
+    public boolean gameOver(boolean print){           //CHECK IT ONE LAST TIME
+        int game = winner();
+        if(print && game>=0) {
+            print();
+            if (game == 0) {
+                System.out.printf(" game ended with no winner ");
+            } else if (game == 3) {
+                System.out.println("draw");
+            } else {
+                System.out.println("\033[1;32m" + "WINNER IS :");
+                if (game==2) {
+                    System.out.printf("\033[1;31m" + "Red Player");
+                } else {
+                    System.out.printf("\033[1;30m" + "Black Player");
+                }
+            }
+        }
+        if (game >= 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private int triplePower(TYPE playerOfTrun){
@@ -516,6 +582,13 @@ public class Pentago
         return (powerPlayer*9)-(powerOpponent*9);
     }
 
+    public boolean rotationSymmetric(int numBlock){
+        if(blocks[numBlock].hasClockWiseSymmetry()&&blocks[numBlock].hasCounterClockWiseSymmetry()){
+            return true;
+        }
+        return false;
+    }
+
     public int strategyBoard(TYPE playerOfTurn){
         int marbles =0;
         for(int i=0; i<4; i++){
@@ -525,5 +598,15 @@ public class Pentago
         //diagonal of five (the triple power play)
         triplePowerPlay=triplePower(playerOfTurn);
         return marbles + triplePowerPlay;
+    }
+
+    public void turnBackRotation( int numBlock, boolean clockWise){
+        blocks[numBlock].notch(!clockWise);
+        return;
+    }
+
+    public void turnBackMarble(MarbleHouse house){
+        house.hollowHouse();
+        return;
     }
 }

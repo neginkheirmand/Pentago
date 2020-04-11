@@ -16,7 +16,7 @@ enum TYPE{
 public class Player {
 
     //type of player
-    private final TYPE typePlayer;
+    protected final TYPE typePlayer;
 
     /**
      * constructor of the class
