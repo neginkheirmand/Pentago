@@ -3,14 +3,15 @@ package ir.ac.aut;
 import java.lang.reflect.Type;
 
 public class Block {
-
+    private int blockNum;
     private MarbleHouse[][] blockHouses;
 
-    public Block() {
+    public Block(int blockNum) {
+        this.blockNum=blockNum;
         blockHouses = new MarbleHouse[3][3];
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                blockHouses[i][j] = new MarbleHouse(j, i);
+                blockHouses[i][j] = new MarbleHouse(j, i, blockNum);
             }
         }
     }
@@ -61,7 +62,7 @@ public class Block {
 
     public boolean hasClockWiseSymmetry() {
         this.clockWise();
-        MarbleHouse[][] cloneBlockHouses = (new Block()).getBlockHouses();
+        MarbleHouse[][] cloneBlockHouses = (new Block(0)).getBlockHouses();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (blockHouses[i][j].isFull()) {
@@ -86,10 +87,12 @@ public class Block {
         return false;
     }
 
+    //this two methods should be apllied without taking space in the memory
+
     public boolean hasCounterClockWiseSymmetry() {
 
         this.counterClockWise();
-        MarbleHouse[][] cloneBlockHouses = (new Block()).getBlockHouses();
+        MarbleHouse[][] cloneBlockHouses = (new Block(0)).getBlockHouses();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (blockHouses[i][j].isFull()) {

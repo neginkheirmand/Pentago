@@ -18,7 +18,7 @@ public class Pentago
         boardColor=chooseBoardColor();
         blocks= new Block[4];
         for(int i=0; i<4; i++){
-            blocks[i]=new Block();
+            blocks[i]=new Block(i);
         }
     }
 
@@ -76,7 +76,7 @@ public class Pentago
 
 //        System.out.printf("THE STRATEGY OF THIS BOARD FOR THE BLACK PLAYER IS %d\n", strategyBoard(TYPE.BLACK));
 //        System.out.printf("THE STRATEGY OF THIS BOARD FOR THE RED PLAYER IS %d\n", strategyBoard(TYPE.RED));
-//        System.out.printf("\033[1;94m"+"    ");
+        System.out.printf("\033[1;94m"+"    ");
 
         for(int i=1; i<7; i++){
             System.out.printf("   %d  ", i);
@@ -145,9 +145,9 @@ public class Pentago
     }
 
     /**
-     * method to find
-     * @param row
-     * @param column
+     * method to find a house in the block only by looking at its row and column
+     * @param row this number is in [0,5]
+     * @param column this number is in [0,5]
      * @return
      */
     private  MarbleHouse getMarbleHouseInBoard(int row, int column){
@@ -165,6 +165,10 @@ public class Pentago
         else{
             return  blocks[3].getMarbleHouse((row%3), (column%3));
         }
+    }
+
+    private MarbleHouse getMarbleHouseInBlock(int blockNum, int i, int j){
+        return blocks[blockNum].getMarbleHouse(i, j);
     }
 
     public ArrayList<MarbleHouse> getEmptyHouses(TYPE typeOfAi){
@@ -210,6 +214,16 @@ public class Pentago
            getMarbleHouseInBoard(row,column).putMarble(playerType);
             return true;
         }
+    }
+
+    public void addMarbleToBlock(TYPE playerType,int blockNum, int i, int j){
+        getMarbleHouseInBlock(blockNum, i, j);
+        return;
+    }
+
+    public void turnBackMarble(int blockNum, int row, int column){
+        getMarbleHouseInBlock(blockNum, row, column).hollowHouse();
+        return;
     }
 
     public int winner(){
@@ -602,11 +616,6 @@ public class Pentago
 
     public void turnBackRotation( int numBlock, boolean clockWise){
         blocks[numBlock].notch(!clockWise);
-        return;
-    }
-
-    public void turnBackMarble(MarbleHouse house){
-        house.hollowHouse();
         return;
     }
 }

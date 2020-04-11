@@ -21,6 +21,7 @@ public class Main {
             if(pentagoBoard.gameOver(true)){
                 break;
             }
+
             do {
                 if(repetition>0){
                     System.out.printf("Please enter the address of an empty house of the board\n");

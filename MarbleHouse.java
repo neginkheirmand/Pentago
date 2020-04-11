@@ -5,8 +5,9 @@ public class MarbleHouse {
     private final int yOfHouse;
     private boolean isFull;
     private Marble marble;
-
-    public MarbleHouse(int x, int y){
+    private int blockNum;
+    public MarbleHouse(int x, int y, int blockNum){
+        this.blockNum=blockNum;
         this.xOfHouse=x;
         this.yOfHouse=y;
         this.isFull=false;
@@ -25,6 +26,7 @@ public class MarbleHouse {
             return null;
         }
     }
+
     public void putMarble(TYPE typeOfPlayer){
         isFull=true;
         marble= new Marble(typeOfPlayer);
@@ -42,6 +44,8 @@ public class MarbleHouse {
     public int getYOfHouse(){
         return yOfHouse;
     }
+
+    public int getBlockNum(){return blockNum;}
 
     public Marble getMarble(){
         return marble;
