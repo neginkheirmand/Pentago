@@ -19,7 +19,11 @@ public class MarbleHouse {
     }
 
     public TYPE getType(){
-        return marble.getTypeOfMarble();
+        if(isFull==true) {
+            return marble.getTypeOfMarble();
+        }else{
+            return null;
+        }
     }
     public void putMarble(TYPE typeOfPlayer){
         isFull=true;
@@ -38,4 +42,26 @@ public class MarbleHouse {
         return marble;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof MarbleHouse)
+        {
+            MarbleHouse object = (MarbleHouse) obj;
+            if(object.isFull()==isFull){
+                if(isFull==true) {
+                    if (object.getType().name().equals(marble.getTypeOfMarble().name())) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }else{
+                    return true;
+                }
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
 }

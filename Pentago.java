@@ -56,6 +56,7 @@ public class Pentago
      * @param isClockWise the type of twisting
      */
     public void twist(int numberOfBlock, boolean isClockWise){
+        //the block num varies from 0 to 3
         blocks[numberOfBlock].notch(isClockWise);
         return;
     }
@@ -65,6 +66,14 @@ public class Pentago
      */
     public void print(){
 
+
+//        if(blocks[0].hasCounterClockWiseSymmetry()){
+//            System.out.printf("the first block has counter clock wise Symmetry\n");
+//        }else{
+//            System.out.printf("doesnt\n");
+//        }
+
+        System.out.printf("THE STRATEGY OF THIS BOARD FOR THE BLACK PLAYER IS %d\n", strategyBoard(TYPE.BLACK));
         System.out.printf("\033[1;94m"+"    ");
 
         for(int i=1; i<7; i++){
@@ -163,12 +172,6 @@ public class Pentago
            getMarbleHouseInBoard(row,column).putMarble(playerType);
             return true;
         }
-    }
-
-    public void twistBlock(int blockNum, boolean isClockwise) {
-        //the block num varies from 0 to 3
-        blocks[blockNum].notch(isClockwise);
-        return;
     }
 
     private void printWinner(TYPE typeOfPlayer){            //IN GHAZIE RO BADN CHECK KON (IF AVAL)
@@ -401,5 +404,100 @@ public class Pentago
         }
 
         return false;
+    }
+
+    private int triplePower(TYPE playerOfTrun){
+        int powerPlayer=0;
+        int powerOpponent=0;
+        int tempPlayer=0;
+        int tempOpponent=0;
+
+
+        //(\)(start point : i=0; j=1)
+        for(int i=0, j=1; i<5; i++, j++){
+            if(getMarbleHouseInBoard(i, j).isFull()){
+                if(getMarbleHouseInBoard(i,j).getType().name().equals(playerOfTrun.name())){
+                    tempPlayer++;
+                }else{
+                    tempOpponent++;
+                }
+            }
+        }
+        if(tempOpponent!=0&&tempPlayer!=0){
+            tempOpponent=0;
+            tempPlayer=0;
+        }
+        powerOpponent+=tempOpponent;
+        powerPlayer+=tempPlayer;
+
+
+        //(\)(start point : i=1; j=0)
+        for(int i=1, j=0; i<6; i++, j++){
+            if(getMarbleHouseInBoard(i, j).isFull()){
+                if(getMarbleHouseInBoard(i,j).getType().name().equals(playerOfTrun.name())){
+                    tempPlayer++;
+                }else{
+                    tempOpponent++;
+                }
+            }
+        }
+        if(tempOpponent!=0 && tempPlayer!=0){
+            tempOpponent=0;
+            tempPlayer=0;
+        }
+        powerOpponent+=tempOpponent;
+        powerPlayer+=tempPlayer;
+
+
+        //(/)(start point : i=4; j=0)
+        for(int i=4, j=0; i>=0; i--, j++){
+            if(getMarbleHouseInBoard(i, j).isFull()){
+                if(getMarbleHouseInBoard(i,j).getType().name().equals(playerOfTrun.name())){
+                    tempPlayer++;
+                }else{
+                    tempOpponent++;
+                }
+            }
+
+        }
+        if(tempOpponent!=0 && tempPlayer!=0){
+            tempOpponent=0;
+            tempPlayer=0;
+        }
+        powerOpponent+=tempOpponent;
+        powerPlayer+=tempPlayer;
+
+
+        //(/)(start point : i=5; j=1)
+        for(int i=5, j=1; j<5; i--, j++){
+            if(getMarbleHouseInBoard(i, j).isFull()){
+                if(getMarbleHouseInBoard(i,j).getType().name().equals(playerOfTrun.name())){
+                    tempPlayer++;
+                }else{
+                    tempOpponent++;
+                }
+            }
+
+        }
+        if(tempOpponent!=0&&tempPlayer!=0){
+            tempOpponent=0;
+            tempPlayer=0;
+        }
+        powerOpponent+=tempOpponent;
+        powerPlayer+=tempPlayer;
+
+
+        return (powerPlayer*9)-(powerOpponent*9);
+    }
+
+    public int strategyBoard(TYPE playerOfTurn){
+        int marblesPair=0;
+        for(int i=0; i<4; i++){
+            marblesPair+=blocks[i].marblesStrategy(playerOfTurn);
+        }
+        int triplePowerPlay;
+        //diagonal of five (the triple power play)
+        triplePowerPlay=triplePower(playerOfTurn);
+        return marblesPair + triplePowerPlay;
     }
 }
