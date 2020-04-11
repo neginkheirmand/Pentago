@@ -8,10 +8,6 @@ public class AiPlayer extends Player{
         super(typeOfPlayer);
     }
 
-    public void place(Pentago gameBoard){
-
-    }
-
     public void decideNextMove(Pentago gameBoard){//we make sure that the game hasent ended yet
         ArrayList<MarbleHouse> emptyHouse=gameBoard.getEmptyHouses(this.typePlayer);
         int [] blockNum={0,1,2,3};
@@ -52,10 +48,13 @@ public class AiPlayer extends Player{
             gameBoard.turnBackMarble(emptyHouse.get(i).getBlockNum(), emptyHouse.get(i).getYOfHouse(), emptyHouse.get(i).getYOfHouse());
         }
 
+        System.out.printf("going to add marble to row =%d and column=%d of block %d\n", emptyHouse.get(indexHouses).getYOfHouse(),emptyHouse.get(indexHouses).getXOfHouse(),emptyHouse.get(indexHouses).getBlockNum());
         gameBoard.addMarbleToBlock(typePlayer,emptyHouse.get(indexHouses).getBlockNum(), emptyHouse.get(indexHouses).getYOfHouse(), emptyHouse.get(indexHouses).getXOfHouse());
         if(gameBoard.gameOver(true)){
             System.exit(0);
         }
+        gameBoard.print();
+        System.out.printf("going to twist the block number= %d clockWise\n",indexBlock, clockWise[indexClockWise] );
         gameBoard.twist(indexBlock,clockWise[indexClockWise]);
         if(gameBoard.gameOver(true)){
             System.exit(0);
@@ -85,7 +84,7 @@ public class AiPlayer extends Player{
                     return -999;
                 }
             }
-        } else if (repetition == 3) {
+        } else if (repetition == 1) {
             return gameBoard.strategyBoard(this.typePlayer);
         }
 

@@ -217,7 +217,7 @@ public class Pentago
     }
 
     public void addMarbleToBlock(TYPE playerType,int blockNum, int i, int j){
-        getMarbleHouseInBlock(blockNum, i, j);
+        getMarbleHouseInBlock(blockNum, i, j).putMarble(playerType);
         return;
     }
 
