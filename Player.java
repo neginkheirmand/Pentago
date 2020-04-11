@@ -4,7 +4,14 @@ import java.util.Scanner;
 
 enum TYPE{
     BLACK,
-    RED
+    RED;
+    public static TYPE getOtherType(TYPE thisType){
+        if(thisType.equals(BLACK)){
+            return RED;
+        }else{
+            return BLACK;
+        }
+    }
 }
 public class Player {
 

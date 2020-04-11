@@ -73,8 +73,9 @@ public class Pentago
 //            System.out.printf("doesnt\n");
 //        }
 
-        System.out.printf("THE STRATEGY OF THIS BOARD FOR THE BLACK PLAYER IS %d\n", strategyBoard(TYPE.BLACK));
-        System.out.printf("\033[1;94m"+"    ");
+//        System.out.printf("THE STRATEGY OF THIS BOARD FOR THE BLACK PLAYER IS %d\n", strategyBoard(TYPE.BLACK));
+//        System.out.printf("THE STRATEGY OF THIS BOARD FOR THE RED PLAYER IS %d\n", strategyBoard(TYPE.RED));
+//        System.out.printf("\033[1;94m"+"    ");
 
         for(int i=1; i<7; i++){
             System.out.printf("   %d  ", i);
@@ -132,7 +133,7 @@ public class Pentago
                 }
                 System.out.println("+");
         */
-        //a abreviation of the code above is:
+        //an abreviation of the code above is:
             System.out.println("    +-----+-----+-----+   +-----+-----+-----+");
 
             }
@@ -427,11 +428,17 @@ public class Pentago
             tempOpponent=0;
             tempPlayer=0;
         }
+        if(tempOpponent==1&&tempPlayer==0){
+            tempOpponent=0;
+        }else if(tempPlayer==1 && tempOpponent==0){
+            tempPlayer=0;
+        }
         powerOpponent+=tempOpponent;
         powerPlayer+=tempPlayer;
 
-
         //(\)(start point : i=1; j=0)
+        tempPlayer=0;
+        tempOpponent=0;
         for(int i=1, j=0; i<6; i++, j++){
             if(getMarbleHouseInBoard(i, j).isFull()){
                 if(getMarbleHouseInBoard(i,j).getType().name().equals(playerOfTrun.name())){
@@ -445,11 +452,18 @@ public class Pentago
             tempOpponent=0;
             tempPlayer=0;
         }
+        if(tempOpponent==1&&tempPlayer==0){
+            tempOpponent=0;
+        }else if(tempPlayer==1 && tempOpponent==0){
+            tempPlayer=0;
+        }
         powerOpponent+=tempOpponent;
         powerPlayer+=tempPlayer;
 
 
         //(/)(start point : i=4; j=0)
+        tempPlayer=0;
+        tempOpponent=0;
         for(int i=4, j=0; i>=0; i--, j++){
             if(getMarbleHouseInBoard(i, j).isFull()){
                 if(getMarbleHouseInBoard(i,j).getType().name().equals(playerOfTrun.name())){
@@ -464,11 +478,18 @@ public class Pentago
             tempOpponent=0;
             tempPlayer=0;
         }
+        if(tempOpponent==1&&tempPlayer==0){
+            tempOpponent=0;
+        }else if(tempPlayer==1 && tempOpponent==0){
+            tempPlayer=0;
+        }
         powerOpponent+=tempOpponent;
         powerPlayer+=tempPlayer;
 
 
         //(/)(start point : i=5; j=1)
+        tempPlayer=0;
+        tempOpponent=0;
         for(int i=5, j=1; j<5; i--, j++){
             if(getMarbleHouseInBoard(i, j).isFull()){
                 if(getMarbleHouseInBoard(i,j).getType().name().equals(playerOfTrun.name())){
@@ -483,6 +504,11 @@ public class Pentago
             tempOpponent=0;
             tempPlayer=0;
         }
+        if(tempOpponent==1&&tempPlayer==0){
+            tempOpponent=0;
+        }else if(tempPlayer==1 && tempOpponent==0){
+            tempPlayer=0;
+        }
         powerOpponent+=tempOpponent;
         powerPlayer+=tempPlayer;
 
@@ -491,13 +517,13 @@ public class Pentago
     }
 
     public int strategyBoard(TYPE playerOfTurn){
-        int marblesPair=0;
+        int marbles =0;
         for(int i=0; i<4; i++){
-            marblesPair+=blocks[i].marblesStrategy(playerOfTurn);
+            marbles+=blocks[i].marblesStrategy(playerOfTurn);
         }
         int triplePowerPlay;
         //diagonal of five (the triple power play)
         triplePowerPlay=triplePower(playerOfTurn);
-        return marblesPair + triplePowerPlay;
+        return marbles + triplePowerPlay;
     }
 }

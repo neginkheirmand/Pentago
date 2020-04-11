@@ -124,98 +124,193 @@ public class Block {
 
     public int marblesStrategy(TYPE typeOfPlayer) {
         //horizontal
-        int num = 0;
+        int numPlayer = 0;
+        int numOpponent = 0;
         int answer = 0;
         for (int i = 0; i < 3; i++) {
-            num = 0;
+            numPlayer = 0;
+            numOpponent=0;
             for (int j = 0; j < 3; j++) {
                 if (blockHouses[i][j].isFull()) {
                     if (getTypeOfMarble(i, j).name().equals(typeOfPlayer.name())) {
-                        num++;
+                        numPlayer++;
                     } else {
-                        break;
+                        numOpponent++;
                     }
                 }
                 //even if there is a gap in the line we will counted as much as there are at least 2 marbles in a row
             }
-            if(num==3) {
+            if(numPlayer==3) {
                 if (i == 1) {
-                    answer += 7*num;
+                    answer += 5*numPlayer;
                 } else {
-                    answer += 5*num;
+                    answer += 7*numPlayer;
                 }
-            }else if(num==2){
+            }else if(numPlayer==2){
+                if(numOpponent==0) {
+                    if (i == 1) {
+                        answer += 3 * numPlayer;
+                    } else {
+                        answer += 5 * numPlayer;
+                    }
+                }else{
+                    numPlayer=0;
+                    numOpponent=0;
+                    answer-=2;
+                }
+            }else if(numOpponent==3){
                 if (i == 1) {
-                    answer += 5*num;
+                    answer -= 5*numOpponent;
                 } else {
-                    answer += 3*num;
+                    answer -= 7*numOpponent;
+                }
+            }else if(numOpponent==2){
+                if(numPlayer==0){
+                    if(i==1){
+                        answer-= 5 * numOpponent;
+                    }else{
+                        answer-= 7* numOpponent;
+                    }
+                }
+                else{
+                    numOpponent=0;
+                    numPlayer=0;
+                    answer+=4;
                 }
             }
+
         }
 
         //vertical
-        num = 0;
         for (int j = 0; j < 3; j++) {
-            num = 0;
+            numPlayer = 0;
+            numOpponent=0;
             for (int i = 0; i < 3; i++) {
                 if (blockHouses[i][j].isFull()) {
                     if (blockHouses[i][j].getType().name().equals(typeOfPlayer.name())) {
-                        num++;
+                        numPlayer++;
                     } else {
-                        break;
+                        numOpponent++;
                     }
                 }
             }
-            if (num == 3) {
-                if(j==1){
-                    answer+=5*num;
-                }else{
-                    answer+=7*num;
+            if(numPlayer==3) {
+                if (j == 1) {
+                    answer += 5*numPlayer;
+                } else {
+                    answer += 7*numPlayer;
                 }
-            }else if(num==2){
-                if(j==1){
-                    answer+=3*num;
+            }else if(numPlayer==2){
+                if(numOpponent==0) {
+                    if (j == 1) {
+                        answer += 3 * numPlayer;
+                    } else {
+                        answer += 5 * numPlayer;
+                    }
                 }else{
-                    answer+=5*num;
+                    numPlayer=0;
+                    numOpponent=0;
+                    answer-=2;
+                }
+            }else if(numOpponent==3){
+                if (j == 1) {
+                    answer -= 5*numOpponent;
+                } else {
+                    answer -= 7*numOpponent;
+                }
+            }else if(numOpponent==2){
+                if(numPlayer==0){
+                    if(j==1){
+                        answer-= 6 * numOpponent;
+                    }else{
+                        answer-= 8* numOpponent;
+                    }
+                }
+                else{
+                    numOpponent=0;
+                    numPlayer=0;
+                    answer+=6;
+                    //cause was able to stop the marbles of becoming 3
                 }
             }
+
         }
 
         //diagonal(\)
-        num = 0;
         for (int i = 0, j = 0; i < 3; j++, i++) {
+            numPlayer = 0;
+            numOpponent=0;
             if (getMarbleHouse(i, j).isFull() == true) {
                 if (getTypeOfMarble(i, j).name().equals(typeOfPlayer.name())) {
-                    num++;
+                    numPlayer++;
                 } else {
-                    break;
+                    numOpponent++;
                 }
             }
+
         }
-        if (num == 3) {
-            //monicas five strategy has 3 points
-            answer+=3*num;
-        }else if(num==2){
-            answer+=1*num;
+        if(numPlayer==3) {
+            answer += 3*numPlayer;
+
+        }else if(numPlayer==2){
+            if(numOpponent==0) {
+                answer += numPlayer;
+            }else{
+                numPlayer=0;
+                numOpponent=0;
+                answer-=2;
+            }
+        }else if(numOpponent==3){
+            answer -= 4*numOpponent;
+
+        }else if(numOpponent==2){
+            if(numPlayer==0){
+                answer-= 3 * numOpponent;
+            }
+            else{
+                numOpponent=0;
+                numPlayer=0;
+                answer+=4;
+            }
         }
 
+
         //diagonal(/)
-        num = 0;
         for (int i = 2, j = 0; i >= 0; i--, j++) {
+            numPlayer = 0;
+            numOpponent =0;
             if (getMarbleHouse(i, j).isFull()) {
                 if (getTypeOfMarble(i, j).name().equals(typeOfPlayer.name())) {
-                    num++;
+                    numPlayer++;
                 } else {
-                    break;
+                    numOpponent++;
                 }
             }
         }
-        if (num == 3) {
-            answer+=3*num;
-            //monicas five has 3 points of strategy
-        }else if(num==2){
-            answer+=1*num;
+        if(numPlayer==3) {
+            answer += 3*numPlayer;
+        }else if(numPlayer==2){
+            if(numOpponent==0) {
+                answer += numPlayer;
+            }else{
+                numPlayer=0;
+                numOpponent=0;
+                answer-=2;
+            }
+        }else if(numOpponent==3){
+            answer -= 4*numOpponent;
+
+        }else if(numOpponent==2){
+            if(numPlayer==0){
+                answer-= 3 * numOpponent;
+            }
+            else{
+                numOpponent=0;
+                numPlayer=0;
+                answer+=4;
+            }
         }
+
         return answer;
     }
 
