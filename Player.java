@@ -6,7 +6,7 @@ enum TYPE{
     BLACK,
     RED;
     public static TYPE getOtherType(TYPE thisType){
-        if(thisType.equals(BLACK)){
+        if(thisType.name().equals(BLACK.name())){
             return RED;
         }else{
             return BLACK;
@@ -97,4 +97,36 @@ public class Player {
         }
     }
 
+    public void play(Pentago gameBoard){
+        int repetition=0;
+
+
+        int cont[];
+        int row;
+        int column;
+        int block;
+        boolean clockWise;
+
+
+        do {
+            if(repetition>0){
+                System.out.printf("Please enter the address of an empty house of the board\n");
+            }
+            cont = this.getInputFromHuman();
+            row = cont[0];
+            column = cont[1];
+            repetition++;
+        }while(!gameBoard.addMarbleToBoard(this.typePlayer, row, column));
+        gameBoard.print();
+        if(gameBoard.gameOver(true)){
+            System.exit(0);
+        }
+        block = this.getBlockNum();
+        if(!gameBoard.rotationSymmetric(block)) {
+            clockWise = this.getTwistType();
+            gameBoard.twist(block, clockWise);
+        }
+        System.out.println("done getting input from "+this.typePlayer);
+
+    }
 }

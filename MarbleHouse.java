@@ -5,8 +5,8 @@ public class MarbleHouse {
     private final int yOfHouse;
     private boolean isFull;
     private Marble marble;
-    private int blockNum;
-    public MarbleHouse(int x, int y, int blockNum){
+    private final int blockNum;
+    public MarbleHouse(int y, int x, int blockNum){
         this.blockNum=blockNum;
         this.xOfHouse=x;
         this.yOfHouse=y;

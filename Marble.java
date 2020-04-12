@@ -18,10 +18,6 @@ public class Marble {
         return typeOfMarble;
     }
 
-    public void setTypeOfMarble(TYPE typeOfMarble) {
-        this.typeOfMarble = typeOfMarble;
-    }
-
     public String getColorOfPlayer(){
         return colorOfPlayer;
     }

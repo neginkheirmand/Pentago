@@ -68,11 +68,6 @@ public class Pentago
     public void print(){
 
 
-//        if(blocks[0].hasCounterClockWiseSymmetry()){
-//            System.out.printf("the first block has counter clock wise Symmetry\n");
-//        }else{
-//            System.out.printf("doesnt\n");
-//        }
 
 //        System.out.printf("THE STRATEGY OF THIS BOARD FOR THE BLACK PLAYER IS %d\n", strategyBoard(TYPE.BLACK));
 //        System.out.printf("THE STRATEGY OF THIS BOARD FOR THE RED PLAYER IS %d\n", strategyBoard(TYPE.RED));
@@ -167,44 +162,79 @@ public class Pentago
         }
     }
 
-    private MarbleHouse getMarbleHouseInBlock(int blockNum, int i, int j){
-        return blocks[blockNum].getMarbleHouse(i, j);
+    public int[] getRowAndColumn(int block, int row, int column){
+        if(block==0){
+            int arr[] ={row, column};
+            return arr;
+        }else if(block==1){
+            int arr[] ={row, column+3};
+            return arr;
+        }else if(block==2){
+            int arr[] = {row+3, column};
+            return arr;
+            }else{
+            int arr[] = {row+3, column+3};
+            return arr;
+        }
     }
 
+    //should do a last look to it
     public ArrayList<MarbleHouse> getEmptyHouses(TYPE typeOfAi){
         ArrayList<MarbleHouse> emptyHouses = new ArrayList<MarbleHouse>();
-        int numberInBlock=0;
-        int [] pointEachBlock= new int[4];
-        for(int i=0; i<4; i++){
-            pointEachBlock[i]= blocks[i].marblesStrategy(typeOfAi);
-        }
-        for(int i=0; i<4; i++){
-            numberInBlock = 0;
-            //this first pair of loop for getting the number of full houses in every block
-            for (int x = 0; x < 3; x++) {
-                for (int y = 0; y < 3; y++) {
-                    if(!blocks[i].getMarbleHouse(y, x).isFull()) {
-                        numberInBlock++;
-                    }
-                }
-            }
-            for (int x = 0; x < 3; x++) {
-                for (int y = 0; y < 3; y++) {
-                    if (!blocks[i].getMarbleHouse(y, x).isFull()) {
-                        numberInBlock++;
-                        if(pointEachBlock[i]>5){
-                            emptyHouses.add(0, blocks[i].getMarbleHouse(y, x));
-                        }else if (numberInBlock>2) {
-                            emptyHouses.add(emptyHouses.size()/2, blocks[i].getMarbleHouse(y, x));
-                        }else{
-                            emptyHouses.add( blocks[i].getMarbleHouse(y, x));
-                        }
+//        int numberInBlock=0;
+//        int [] pointEachBlock= new int[4];
+//        for(int i=0; i<4; i++){
+//            pointEachBlock[i]= blocks[i].marblesStrategy(typeOfAi);
+//        }
+        int num=0;
+//        for(int i=0; i<4; i++){
+//            numberInBlock = 0;
+//            //this first pair of loop for getting the number of full houses in every block
+//            for (int x = 0; x < 3; x++) {
+//                for (int y = 0; y < 3; y++) {
+//                    if(!blocks[i].getMarbleHouse(y, x).isFull()) {
+//                        numberInBlock++;
+//                    }
+//                }
+//            }
+            for (int y = 0; y < 6; y++) {
+                for (int x = 0; x < 6; x++) {
+                    if (getMarbleHouseInBoard(y, x).isFull()==false) {
+                        System.out.println(num%9+ " )  "/*b= "+i*/+" y= "+ y+" x= "+x);
+                        System.out.println("b= "+ getMarbleHouseInBoard(y, x).getBlockNum()+" y=" +getMarbleHouseInBoard(y, x).getYOfHouse()+"x="+getMarbleHouseInBoard(y, x).getXOfHouse() );
+//                        if(pointEachBlock[i]>5){
+//                            emptyHouses.add(0, blocks[i].getMarbleHouse(y, x));
+//                        }else if (numberInBlock>2) {
+//                            emptyHouses.add(emptyHouses.size()/2, blocks[i].getMarbleHouse(y, x));
+//                        }else{
+                        emptyHouses.add(getMarbleHouseInBoard(y, x));
+//                        if(i!=getMarbleHouseInBlock(i,y,x).getBlockNum()){
+//                            System.out.printf("WHAT THE HELL\n1");
+//                            System.exit(0);
+//                        }
+//                        if(y!=getMarbleHouseInBlock(i,y,x).getYOfHouse()){
+//                            System.out.printf("WHAT THE HELL\n2");
+//                            System.exit(0);
+//                        }if(x!=getMarbleHouseInBlock(i,y,x).getXOfHouse()){
+//                            System.out.printf("WHAT THE HELL\n3");
+//                            System.exit(0);
+//                        }
+                        num++;
+//                        }
                     }
                 }
             }
 
-        }
+//        }
+
         return emptyHouses;
+    }
+
+    public void printEmptyHouses(){
+        ArrayList<MarbleHouse> a=getEmptyHouses(TYPE.RED);
+        for(int i=0; i<a.size(); i++){
+            System.out.println(" number="+ (i%9)+"   i="+(a.get(i).getYOfHouse())+" j="+(a.get(i).getXOfHouse())+"  of block "+(a.get(i).getBlockNum()));
+        }
     }
 
     public boolean addMarbleToBoard(TYPE playerType, int row, int column){
@@ -214,15 +244,17 @@ public class Pentago
            getMarbleHouseInBoard(row,column).putMarble(playerType);
             return true;
         }
+
+//        if(getMarbleHouseInBlock(blockNum, row, column).isFull()){
+//            return false;
+//        }else{
+//            getMarbleHouseInBlock(blockNum, row, column).putMarble(playerType);
+//            return true;
+//        }
     }
 
-    public void addMarbleToBlock(TYPE playerType,int blockNum, int i, int j){
-        getMarbleHouseInBlock(blockNum, i, j).putMarble(playerType);
-        return;
-    }
-
-    public void turnBackMarble(int blockNum, int row, int column){
-        getMarbleHouseInBlock(blockNum, row, column).hollowHouse();
+    public void turnBackMarble(int row, int column){
+        getMarbleHouseInBoard( row, column).hollowHouse();
         return;
     }
 

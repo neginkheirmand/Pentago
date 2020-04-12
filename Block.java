@@ -9,9 +9,9 @@ public class Block {
     public Block(int blockNum) {
         this.blockNum=blockNum;
         blockHouses = new MarbleHouse[3][3];
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                blockHouses[i][j] = new MarbleHouse(j, i, blockNum);
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
+                blockHouses[y][x] = new MarbleHouse(x, y, blockNum);
             }
         }
     }
@@ -52,29 +52,34 @@ public class Block {
 
     }
 
-    public MarbleHouse getMarbleHouse(int i, int j) {
-        return blockHouses[i][j];
-    }
-
-    public TYPE getTypeOfMarble(int i, int j) {
-        return blockHouses[i][j].getType();
-    }
-
-    public boolean hasClockWiseSymmetry() {
-        this.clockWise();
-        MarbleHouse[][] cloneBlockHouses = (new Block(0)).getBlockHouses();
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (blockHouses[i][j].isFull()) {
-                    cloneBlockHouses[i][j].putMarble(blockHouses[i][j].getType());
+    /**
+     * this method should return a reference to a MarbleHouse of this block that has an xOfHouse equal to x and an yOfHouse equal to y
+     * @param y passed parameter
+     * @param x passed parameter
+     * @return
+     */
+    public MarbleHouse getMarbleHouse(int y, int x) {
+//        return blockHouses[y][x];
+        for(int i=0; i<3; i++){
+            for(int j=0; j<3; j++){
+                if(y==blockHouses[i][j].getYOfHouse() && x==blockHouses[i][j].getXOfHouse()){
+                    return blockHouses[i][j];
                 }
             }
         }
-        this.counterClockWise();
+        return null;
+    }
+
+
+    public TYPE getTypeOfMarble(int y, int x) {
+        return blockHouses[y][x].getType();
+    }
+
+    public boolean hasClockWiseSymmetry() {
         int number = 0;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (cloneBlockHouses[i][j].equals(blockHouses[i][j])) {
+                if (blockHouses[2-j][i].equals(blockHouses[i][j])) {
                     number++;
                 } else {
                     return false;
@@ -87,24 +92,12 @@ public class Block {
         return false;
     }
 
-    //this two methods should be apllied without taking space in the memory
-
     public boolean hasCounterClockWiseSymmetry() {
 
-        this.counterClockWise();
-        MarbleHouse[][] cloneBlockHouses = (new Block(0)).getBlockHouses();
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (blockHouses[i][j].isFull()) {
-                    cloneBlockHouses[i][j].putMarble(blockHouses[i][j].getType());
-                }
-            }
-        }
-        this.clockWise();
         int number = 0;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (cloneBlockHouses[i][j].equals(blockHouses[i][j])) {
+                if (blockHouses[j][2-i].equals(blockHouses[i][j])) {
                     number++;
                 } else {
                     return false;
@@ -119,10 +112,6 @@ public class Block {
 
     private MarbleHouse[][] getBlockHouses() {
         return blockHouses;
-    }
-
-    private void setBlockHouses(MarbleHouse[][] newBlockHouses) {
-        this.blockHouses = newBlockHouses;
     }
 
     public int marblesStrategy(TYPE typeOfPlayer) {
@@ -189,6 +178,7 @@ public class Block {
             numPlayer = 0;
             numOpponent=0;
             for (int i = 0; i < 3; i++) {
+                System.out.println("i ="+i+" j="+j);
                 if (blockHouses[i][j].isFull()) {
                     if (blockHouses[i][j].getType().name().equals(typeOfPlayer.name())) {
                         numPlayer++;
@@ -240,9 +230,10 @@ public class Block {
         }
 
         //diagonal(\)
-        for (int i = 0, j = 0; i < 3; j++, i++) {
+        for (int i = 0, j = 0; i < 3 && j<3; j++, i++) {
             numPlayer = 0;
             numOpponent=0;
+            System.out.println("i ="+i+" j="+j);
             if (getMarbleHouse(i, j).isFull() == true) {
                 if (getTypeOfMarble(i, j).name().equals(typeOfPlayer.name())) {
                     numPlayer++;
@@ -282,6 +273,7 @@ public class Block {
         for (int i = 2, j = 0; i >= 0; i--, j++) {
             numPlayer = 0;
             numOpponent =0;
+            System.out.println("i ="+i+" j="+j);
             if (getMarbleHouse(i, j).isFull()) {
                 if (getTypeOfMarble(i, j).name().equals(typeOfPlayer.name())) {
                     numPlayer++;
