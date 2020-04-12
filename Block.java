@@ -1,11 +1,23 @@
 package ir.ac.aut;
 
-import java.lang.reflect.Type;
+
+
+/**
+ * this class holds information about each block of the board
+ * @author      negin kheirmand <neginkheirmand@aut.ac.ir>
+ * @version     1                 (current version number of program)
+ */
 
 public class Block {
+    //the block number, varies from 0 to 3
     private int blockNum;
+    //the bidimensional array of the MarbleHouses
     private MarbleHouse[][] blockHouses;
 
+    /**
+     * the constructor
+     * @param blockNum variable for setting the blockNum
+     */
     public Block(int blockNum) {
         this.blockNum=blockNum;
         blockHouses = new MarbleHouse[3][3];
@@ -16,6 +28,10 @@ public class Block {
         }
     }
 
+    /**
+     * method for doing the rotations of this block
+     * @param isClockWise if true then the rotation will be clock-wise and if its false the roattion will be counter clock-wise
+     */
     public void notch(boolean isClockWise) {
         if (isClockWise) {
             clockWise();
@@ -25,15 +41,9 @@ public class Block {
         return;
     }
 
-    public void printBlockHouses(){
-        for(int i=0; i<3; i++){
-            for(int j=0; j<3; j++){
-                System.out.println("i= "+i+"  j= "+j);
-                System.out.println("y[i][j] ="+ blockHouses[i][j].getYOfHouse()+"  x[i][j] ="+blockHouses[i][j].getXOfHouse()+"\n\n\n");
-            }
-        }
-    }
-
+    /**
+     * this method is meant to do specifically the  clock-wise rotation
+     */
     private void clockWise() {
         //clock-wise
         Block containerBlock= new Block(0);
@@ -58,6 +68,9 @@ public class Block {
     }
 
 
+    /**
+     * this method is meant to do specifically the counter clock-wise rotation
+     */
     private void counterClockWise() {
 
         //counter clock-wise
@@ -102,10 +115,21 @@ public class Block {
     }
 
 
-    public TYPE getTypeOfMarble(int y, int x) {
+    /**
+     * this method is meant to give the Tyoe of the marble in an specific location of the block with the y and x 's specified as the parameters of the method
+     * bhefore calling this method we have to make sure that there is actually a marble in this house of the block
+     * @param y the y of tyhe specified Marblehouse
+     * @param x the y of tyhe specified Marblehouse
+     * @return
+     */
+    private TYPE getTypeOfMarble(int y, int x) {
         return blockHouses[y][x].getType();
     }
 
+    /**
+     * this method should evaluate if this block has hasClockWiseSymmetry
+     * @return if has hasClockWiseSymmetry return will be true if not the return will be false
+     */
     public boolean hasClockWiseSymmetry() {
         int number = 0;
         for (int i = 0; i < 3; i++) {
@@ -123,8 +147,10 @@ public class Block {
         return false;
     }
 
-    //this two methods should be apllied without taking space in the memory
-
+    /**
+     * this method should evaluate if this block has hasCounterClockWiseSymmetry
+     * @return if has hasCounterClockWiseSymmetry return will be true if not the return will be false
+     */
     public boolean hasCounterClockWiseSymmetry() {
 
         int number = 0;
@@ -143,14 +169,19 @@ public class Block {
         return false;
     }
 
+    /**
+     * ths method should return the bidimensional array in the field of the class
+     * @return the bidimensional array of MarbleHouses
+     */
     private MarbleHouse[][] getBlockHouses() {
         return blockHouses;
     }
 
-    private void setBlockHouses(MarbleHouse[][] newBlockHouses) {
-        this.blockHouses = newBlockHouses;
-    }
-
+    /**
+     * this method should search the block and give points to each of the players, the ai and the opponent
+     * @param typeOfPlayer the TYPE of the aiPlayer
+     * @return the points given to aiPlayer having in counter the points of the opponent
+     */
     public int marblesStrategy(TYPE typeOfPlayer) {
         //horizontal
         int numPlayer = 0;
@@ -290,11 +321,16 @@ public class Block {
                 answer-=2;
             }
         }else if(numOpponent==3){
-            answer -= 4*numOpponent;
-
+            answer -= 4 * numOpponent;
+            if(blockNum==0||blockNum==3){
+                answer--;
+            }
         }else if(numOpponent==2){
             if(numPlayer==0){
-                answer-= 3 * numOpponent;
+                if(blockNum==0||blockNum==3){
+                    answer--;
+                }
+                answer -= 3 * numOpponent;
             }
             else{
                 numOpponent=0;
@@ -328,10 +364,15 @@ public class Block {
             }
         }else if(numOpponent==3){
             answer -= 4*numOpponent;
-
+            if(blockNum==1||blockNum==2){
+                answer--;
+            }
         }else if(numOpponent==2){
             if(numPlayer==0){
                 answer-= 3 * numOpponent;
+                if(blockNum==1||blockNum==2){
+                    answer--;
+                }
             }
             else{
                 numOpponent=0;

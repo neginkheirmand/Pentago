@@ -1,13 +1,21 @@
 package ir.ac.aut;
 
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
+
+/**
+ * this class holds information about the board
+ * @author      negin kheirmand <neginkheirmand@aut.ac.ir>
+ * @version     1                 (current version number of program)
+ */
+
 public class Pentago
 {
+    //the color of the board for the print method
     private final String boardColor;
+    //the Array of blocks
     private Block[] blocks;
 
 
@@ -19,14 +27,6 @@ public class Pentago
         blocks= new Block[4];
         for(int i=0; i<4; i++){
             blocks[i]=new Block(i);
-        }
-    }
-
-    public void PrintBlockxAndy(){
-        for (int i=0; i<4; i++){
-            System.out.println("block number:"+(i+1)+"\n2");
-            blocks[i].printBlockHouses();
-            System.out.println("\n\n\n\n");
         }
     }
 
@@ -170,45 +170,57 @@ public class Pentago
         }
     }
 
-    public int[] getRowAndColumn(int block, int row, int column){
-        if(block==0){
-            int arr[] ={row, column};
-            return arr;
-        }else if(block==1){
-            int arr[] ={row, column+3};
-            return arr;
-        }else if(block==2){
-            int arr[] = {row+3, column};
-            return arr;
-            }else{
-            int arr[] = {row+3, column+3};
-            return arr;
-        }
-    }
-
-    //should do a last look to it
-    public ArrayList<MarbleHouse> getEmptyHouses(TYPE typeOfAi){
+    /**
+     * this method return an array list of MarbleHouse s that are empty
+     * @return
+     */
+    public ArrayList<MarbleHouse> getEmptyHouses(){
         ArrayList<MarbleHouse> emptyHouses = new ArrayList<MarbleHouse>();
 
-            for (int y = 0; y < 6; y++) {
-                for (int x = 0; x < 6; x++) {
-                    if (getMarbleHouseInBoard(y, x).isFull()==false) {
-                        emptyHouses.add(getMarbleHouseInBoard(y, x));
+        for(int b=0; b<4; b++){
+            for(int i=0; i<3; i++){
+                for(int j=0; j<3; j++){
+                    if(getMarbleHouseOfBlock(b, i, j).isFull()==false){
+                        //is empty
+                        emptyHouses.add(getMarbleHouseOfBlock(b, i, j));
                     }
                 }
             }
-
-
+        }
         return emptyHouses;
     }
 
-    public void printEmptyHouses(){
-        ArrayList<MarbleHouse> a=getEmptyHouses(TYPE.RED);
-        for(int i=0; i<a.size(); i++){
-            System.out.println(" number="+ (i%9)+"   i="+(a.get(i).getYOfHouse())+" j="+(a.get(i).getXOfHouse())+"  of block "+(a.get(i).getBlockNum()));
+    /**
+     * this method is meant to help the consule output in the ai class
+     * @param blockNum the block number of the marble being added
+     * @param row the row in which the marble is being added
+     * @param column the column in which the marble is being added
+     * @return a 2 house array, the first one is the row and the second one is the column
+     */
+    public int[] getRowAndColumn(int blockNum, int row, int column){
+        if(blockNum==0){
+            int arr[]= {row, column};
+            return arr;
+        }else if(blockNum==1){
+            int arr[]={row, column+3};
+            return arr;
+        }else if(blockNum==2){
+            int arr[]={row+3, column};
+            return arr;
+
+        }else{
+            int arr[]={row+3, column+3};
+            return arr;
         }
     }
 
+    /**
+     * a method which adds a marble to the board in the specified location if possible and return true if was able to and if if was not able to then returns false
+     * @param playerType the Type of player
+     * @param row the row in ehich the marble is added
+     * @param column the column in which the marble is added
+     * @return true if was able to and false if it wasnt
+     */
     public boolean addMarbleToBoard(TYPE playerType, int row, int column){
         if(getMarbleHouseInBoard(row, column).isFull()){
             return false;
@@ -225,11 +237,52 @@ public class Pentago
 //        }
     }
 
-    public void turnBackMarble(int row, int column){
-        getMarbleHouseInBoard( row, column).hollowHouse();
+    /**
+     *
+     * method to find a house in the block only by looking at its row and column
+     * @param row this number is in [0,2]
+     * @param column this number is in [0,2]
+     * @param blockNum the block in which the marble is being added to
+     * @return
+     */
+    public MarbleHouse getMarbleHouseOfBlock(int blockNum, int row, int column){
+        return blocks[blockNum].getMarbleHouse(row, column);
+    }
+
+    /**
+     * method to add marble to a block with the given number of block
+     * @param playerType the TYPE of player adding the marble
+     * @param blockNum the number of the block [0,3]
+     * @param row the row [0,2]
+     * @param column the column [0,2]
+     */
+    public void addMarbleToBlock(TYPE playerType, int blockNum, int row, int column){
+        //we are sure that the choosen place is not already full since the method of checking that point has been called before this one
+        getMarbleHouseOfBlock(blockNum, row, column).putMarble(playerType);
+    }
+
+    /**
+     * the method to take back the marble which was added
+     * @param blockNum the block number in which was added
+     * @param row the row in which was added [0,2]
+     * @param column the column in which was added [0,2]
+     */
+    public void turnBackMarble(int blockNum, int row, int column){
+        getMarbleHouseOfBlock(blockNum, row, column).hollowHouse();
         return;
     }
 
+    /**
+     * a method which defines the state of the game
+     * States:
+     * if the return is -1 : the game continues
+     * if the return is 0 : there is no space left in the board but nobody wins cause there is no pair of 5
+     * if the return is 1 : the black player wins
+     * if the return is 2 : the red player wins
+     * if the return is 3 : there is a pair of 5 of both players in the board (draw)
+     *
+     * @return the number of state
+     */
     public int winner(){
 
         boolean redWin=false;
@@ -297,7 +350,7 @@ public class Pentago
             if(numContinousBlack==4){
                 if(getMarbleHouseInBoard(0,j).isFull() && getMarbleHouseInBoard(0, j).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
                     blackWin = true;
-                }else if(getMarbleHouseInBoard(0, j).isFull() && getMarbleHouseInBoard(5, j).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
+                }else if(getMarbleHouseInBoard(5, j).isFull() && getMarbleHouseInBoard(5, j).getMarble().getTypeOfMarble().equals(TYPE.BLACK)){
                     blackWin = true;
                 }
             } else if(numContinousRed==4){
@@ -467,6 +520,11 @@ public class Pentago
         return -1;
     }
 
+    /**
+     * this method returns a boolean defining if the game is over yet or not
+     * @param print if this boolean is true then this method will print out the state of the game
+     * @return a boolean refering to the state of the game
+     */
     public boolean gameOver(boolean print){           //CHECK IT ONE LAST TIME
         int game = winner();
         if(print && game>=0) {
@@ -491,6 +549,25 @@ public class Pentago
         }
     }
 
+    /**
+     * this method should define the number of symmetric blocks in the board game
+     * @return the number of symmetric blocks
+     */
+    public int numSymmetricBlocks(){
+        int num=0;
+        for(int i=0; i<4; i++){
+            if(rotationSymmetric(i)){
+                num++;
+            }
+        }
+        return num;
+    }
+
+    /**
+     * a method to return the pont of the aiplayer in the game while counting the points of the strategy called the triple power
+     * @param playerOfTrun the TYPE of the aiplayer
+     * @return the points
+     */
     private int triplePower(TYPE playerOfTrun){
         int powerPlayer=0;
         int powerOpponent=0;
@@ -597,9 +674,20 @@ public class Pentago
         powerPlayer+=tempPlayer;
 
 
+        if(powerPlayer>18){
+            powerPlayer-=9;
+        }
+        if(powerOpponent>18){
+            powerOpponent-=9;
+        }
         return (powerPlayer*9)-(powerOpponent*9);
     }
 
+    /**
+     * this method sees if the block with the given number passed to  the method is symmetric in rotation
+     * @param numBlock the block number
+     * @return true if is symmetric and false if not
+     */
     public boolean rotationSymmetric(int numBlock){
         if(blocks[numBlock].hasClockWiseSymmetry()&&blocks[numBlock].hasCounterClockWiseSymmetry()){
             return true;
@@ -607,6 +695,11 @@ public class Pentago
         return false;
     }
 
+    /**
+     * this method should get the point of the ai player
+     * @param playerOfTurn the TYPE of the player
+     * @return the points
+     */
     public int strategyBoard(TYPE playerOfTurn){
         int marbles =0;
         for(int i=0; i<4; i++){
@@ -618,6 +711,11 @@ public class Pentago
         return marbles + triplePowerPlay;
     }
 
+    /**
+     * a method to turn back the rotation maid in the step before, the ai class need this from the board
+     * @param numBlock the block number
+     * @param clockWise the kind of rotation , if true is clock-wise if false is counter clock-wise
+     */
     public void turnBackRotation( int numBlock, boolean clockWise){
         blocks[numBlock].notch(!clockWise);
         return;

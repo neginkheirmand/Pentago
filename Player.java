@@ -2,6 +2,10 @@ package ir.ac.aut;
 
 import java.util.Scanner;
 
+
+/**
+ * enum containing the differenet TYPEs of marble and respectivly the different TYPEs of player
+ */
 enum TYPE{
     BLACK,
     RED;
@@ -13,6 +17,13 @@ enum TYPE{
         }
     }
 }
+
+
+/**
+ * this class holds information about the player
+ * @author      negin kheirmand <neginkheirmand@aut.ac.ir>
+ * @version     1                 (current version number of program)
+ */
 public class Player {
 
     //type of player
@@ -59,6 +70,11 @@ public class Player {
         return answer;
     }
 
+    /**
+     * get from the user the number of the block which the user wants to rotate and see if that block has Symmetry in the specified way
+     * if it has then ignore that block
+     * @return the number of the block
+     */
     public int getBlockNum(){
         if(this.typePlayer.equals(TYPE.RED)){
             System.out.printf("\033[1;31m");
@@ -82,6 +98,10 @@ public class Player {
         return blockNum-1;
     }
 
+    /**
+     * get twist TYPE from the consule entered by the user
+     * @return boolean defining if its clock-wise or not
+     */
     public boolean getTwistType(){
         Scanner scan=new Scanner(System.in);
         System.out.println("How do you want to twist the block?\n1) Clock-Wise\n2) Counter Clock-Wise");
@@ -98,6 +118,10 @@ public class Player {
         }
     }
 
+    /**
+     * the play method of the player
+     * @param gameBoard the Pentago game board in which the game is being played
+     */
     public void play(Pentago gameBoard){
         int repetition=0;
 
