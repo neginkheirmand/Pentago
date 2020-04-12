@@ -52,6 +52,7 @@ public class Player {
         column=scan.nextInt();
         while(column<0|| column>6){
             System.out.println("Please enter a valid number");
+            column=scan.nextInt();
         }
 
         int answer[]={row-1, column-1};

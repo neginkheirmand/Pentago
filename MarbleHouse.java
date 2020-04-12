@@ -15,6 +15,13 @@ public class MarbleHouse {
         //to make sure we wont use it (cause there is still no marble in this house of the board)
     }
 
+    public Marble getMarble(){
+        if(isFull==true){
+            return marble;
+        }
+        return null;
+    }
+
     public boolean isFull(){
         return isFull;
     }
@@ -46,10 +53,6 @@ public class MarbleHouse {
     }
 
     public int getBlockNum(){return blockNum;}
-
-    public Marble getMarble(){
-        return marble;
-    }
 
     @Override
     public boolean equals(Object obj) {

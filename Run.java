@@ -23,9 +23,7 @@ public class Run {
                 break;
             }
 
-            System.out.printf("ai going to play\n");
             blackPlayer.decideNextMove(pentagoBoard);
-            System.out.printf("ai played\n\n");
         }
 
     }

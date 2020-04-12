@@ -24,36 +24,36 @@ public class AiPlayer extends Player{
             gameBoard.addMarbleToBoard(typePlayer, arr[0], arr[1]);
             for(int j=0; j<blockNum.length; j++){
                 int temp;
-                if(gameBoard.rotationSymmetric(j)){
-                    gameBoard.twist(j, clockWise[0]);
-    if(i==0&&j==0) {
-        System.out.printf("goes in\n");
-        gameBoard.print();
-    }
-                    temp=getBestMove(gameBoard, 0, TYPE.getOtherType(typePlayer) );
-    if(i==0&&j==0) {
-        System.out.printf("comes out\n\n\n");
-        gameBoard.print();
-    }
-                    if(temp > maximum){
-                        maximum=temp;
-                        indexHouses=i;
-                        indexBlock=j;
-                        indexClockWise=0;
-                    }
-                    gameBoard.turnBackRotation(j, clockWise[0]);
-                }else{
+//                if(gameBoard.rotationSymmetric(j)){
+//                    gameBoard.twist(j, clockWise[0]);
+////    if(i==0&&j==0) {
+////        System.out.printf("goes in\n");
+////        gameBoard.print();
+////    }
+//                    temp=getBestMove(gameBoard, 0, TYPE.getOtherType(typePlayer) );
+////    if(i==0&&j==0) {
+////        System.out.printf("comes out\n\n\n");
+////        gameBoard.print();
+////    }
+//                    if(temp > maximum){
+//                        maximum=temp;
+//                        indexHouses=i;
+//                        indexBlock=j;
+//                        indexClockWise=0;
+//                    }
+//                    gameBoard.turnBackRotation(j, clockWise[0]);
+//                }else{
                     for(int k=0; k<clockWise.length; k++){
                         gameBoard.twist(j, clockWise[k]);
-    if(i==0&&j==0) {
-        System.out.printf("goes in\n");
-        gameBoard.print();
-    }
+//    if(i==0&&j==0) {
+//        System.out.printf("goes in\n");
+//        gameBoard.print();
+//    }
                         temp=getBestMove(gameBoard, 0, TYPE.getOtherType(typePlayer) );
-    if(i==0&&j==0) {
-        System.out.printf("comes out\n\n\n");
-        gameBoard.print();
-    }
+//    if(i==0&&j==0) {
+//        System.out.printf("comes out\n\n\n");
+//        gameBoard.print();
+//    }
                         if(temp > maximum){
                             maximum=temp;
                             indexHouses=i;
@@ -62,7 +62,7 @@ public class AiPlayer extends Player{
                         }
                         gameBoard.turnBackRotation(j, clockWise[k]);
                     }
-                }
+//                }
             }
             gameBoard.turnBackMarble(arr[0], arr[1]);
         }
@@ -103,7 +103,7 @@ public class AiPlayer extends Player{
                     return -999;
                 }
             }
-        } else if (repetition == 1) {
+        } else if (repetition == 2) {
             return gameBoard.strategyBoard(this.typePlayer);
         }
         ArrayList<MarbleHouse> emptyHouse = gameBoard.getEmptyHouses(playerOfTurn);
@@ -173,6 +173,7 @@ public class AiPlayer extends Player{
             }
             return minimum;
         }
+
 
 
     }

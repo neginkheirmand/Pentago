@@ -22,6 +22,14 @@ public class Pentago
         }
     }
 
+    public void PrintBlockxAndy(){
+        for (int i=0; i<4; i++){
+            System.out.println("block number:"+(i+1)+"\n2");
+            blocks[i].printBlockHouses();
+            System.out.println("\n\n\n\n");
+        }
+    }
+
     /**
      * method to take in input about the color of the board;
      * @return String with the color unicode
@@ -181,51 +189,15 @@ public class Pentago
     //should do a last look to it
     public ArrayList<MarbleHouse> getEmptyHouses(TYPE typeOfAi){
         ArrayList<MarbleHouse> emptyHouses = new ArrayList<MarbleHouse>();
-//        int numberInBlock=0;
-//        int [] pointEachBlock= new int[4];
-//        for(int i=0; i<4; i++){
-//            pointEachBlock[i]= blocks[i].marblesStrategy(typeOfAi);
-//        }
-        int num=0;
-//        for(int i=0; i<4; i++){
-//            numberInBlock = 0;
-//            //this first pair of loop for getting the number of full houses in every block
-//            for (int x = 0; x < 3; x++) {
-//                for (int y = 0; y < 3; y++) {
-//                    if(!blocks[i].getMarbleHouse(y, x).isFull()) {
-//                        numberInBlock++;
-//                    }
-//                }
-//            }
+
             for (int y = 0; y < 6; y++) {
                 for (int x = 0; x < 6; x++) {
                     if (getMarbleHouseInBoard(y, x).isFull()==false) {
-                        System.out.println(num%9+ " )  "/*b= "+i*/+" y= "+ y+" x= "+x);
-                        System.out.println("b= "+ getMarbleHouseInBoard(y, x).getBlockNum()+" y=" +getMarbleHouseInBoard(y, x).getYOfHouse()+"x="+getMarbleHouseInBoard(y, x).getXOfHouse() );
-//                        if(pointEachBlock[i]>5){
-//                            emptyHouses.add(0, blocks[i].getMarbleHouse(y, x));
-//                        }else if (numberInBlock>2) {
-//                            emptyHouses.add(emptyHouses.size()/2, blocks[i].getMarbleHouse(y, x));
-//                        }else{
                         emptyHouses.add(getMarbleHouseInBoard(y, x));
-//                        if(i!=getMarbleHouseInBlock(i,y,x).getBlockNum()){
-//                            System.out.printf("WHAT THE HELL\n1");
-//                            System.exit(0);
-//                        }
-//                        if(y!=getMarbleHouseInBlock(i,y,x).getYOfHouse()){
-//                            System.out.printf("WHAT THE HELL\n2");
-//                            System.exit(0);
-//                        }if(x!=getMarbleHouseInBlock(i,y,x).getXOfHouse()){
-//                            System.out.printf("WHAT THE HELL\n3");
-//                            System.exit(0);
-//                        }
-                        num++;
-//                        }
                     }
                 }
             }
 
-//        }
 
         return emptyHouses;
     }
