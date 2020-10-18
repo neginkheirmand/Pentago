@@ -7,7 +7,7 @@ The game is played on a 6×6 board divided into four 3×3 sub-boards (or quadran
 click [here](https://github.com/neginkheirmand/Pentago/raw/master/description%20and%20examples/PentagoRulesStrategy.pdf) to download document containing all the rules and basic strategies in the game.
 you can play an online version of the game [here](http://jakebrunsman.com/pentago/index.html).
 
-#### description 
+#### Description
 
 [project decription](https://github.com/neginkheirmand/Pentago/raw/master/description%20and%20examples/Pentago.pdf)
 
@@ -17,3 +17,12 @@ you can play an online version of the game [here](http://jakebrunsman.com/pentag
 
 ### Code
 This game was implemented with java. supports 1 player(against ai) and 2 player(human opponent) games.
+#### Run Examples:
+
+![](https://github.com/neginkheirmand/Pentago/blob/master/description%20and%20examples/example%20(1).png?raw=true)
+![](https://github.com/neginkheirmand/Pentago/blob/master/description%20and%20examples/example%20(2).png?raw=true)
+![](https://github.com/neginkheirmand/Pentago/blob/master/description%20and%20examples/example%20(3).png?raw=true)
+![](https://github.com/neginkheirmand/Pentago/blob/master/description%20and%20examples/example%20(4).png?raw=true)
+![](https://github.com/neginkheirmand/Pentago/blob/master/description%20and%20examples/example%20(5).png?raw=true)
+![](https://github.com/neginkheirmand/Pentago/blob/master/description%20and%20examples/example%20(6).png?raw=true)
+![](https://github.com/neginkheirmand/Pentago/blob/master/description%20and%20examples/example%20(7).png?raw=true)
