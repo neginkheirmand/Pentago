@@ -153,11 +153,10 @@ public class Pentago
      * @param column this number is in [0,5]
      * @return
      */
-    private  MarbleHouse getMarbleHouseInBoard(int row, int column){
+    private MarbleHouse getMarbleHouseInBoard(int row, int column){
         //the rows and columns are counted from 0 to 5
         if(row<3&&column<3){
             return  blocks[0].getMarbleHouse(row, column);
-
         }
         else if(row<3&&column>2){
             return  blocks[1].getMarbleHouse(row, (column%3));
